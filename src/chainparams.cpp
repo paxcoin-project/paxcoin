@@ -170,6 +170,7 @@ public:
 
         vSeeds.clear();
         // Note that of those with the service bits flag, most only support a subset of possible options
+        vSeeds.push_back(CDNSSeedData("seed0", "chain001.bitchk.com",true));
         vSeeds.push_back(CDNSSeedData("seed1", "pax001.bitchk.com",true));
         vSeeds.push_back(CDNSSeedData("seed2", "pax002.bitchk.com",true));
         vSeeds.push_back(CDNSSeedData("seed3", "pax003.bitchk.com",true));
@@ -288,7 +289,7 @@ public:
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
-            (  0, uint256S("0xf47f333675ef7872069b81c29eb84003174ea12a42db657dd133c4ca8d9d6b80"))
+            (  0, uint256S("0x1381055366fd77a7a55d1ee8f19b7e97f13fab67cd99ae921d07848eb64ed59e"))
         };
 
         chainTxData = ChainTxData{
@@ -367,7 +368,7 @@ public:
 
         checkpointData = (CCheckpointData){
             boost::assign::map_list_of
-            ( 0, uint256S("0x059fe092401d4bde9b38de8ee3b92c3352bec2ab055d66f0b9fb418a101d2efd"))
+            ( 0, uint256S("0x86b2eda533411f046104f10f3dc940caa9e4c413684d69eff3fea615b4b3dcc1"))
         };
 
         chainTxData = ChainTxData{
