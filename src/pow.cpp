@@ -77,9 +77,12 @@ unsigned int GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHead
 
     // Go back by what we want to be 1 days worth of blocks
     const CBlockIndex* pindexFirst = pindexLast;
-    
-    for (int i = 0; pindexFirst && i < blockstogoback; i++)
+    for (int i = 0; pindexFirst && i < blockstogoback; i++){
+        if(pindexFirst->nHeight<=1)//root
+            break;
         pindexFirst = pindexFirst->pprev;
+    }
+
 
     assert(pindexFirst);
 
