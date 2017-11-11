@@ -10,7 +10,7 @@
 #include "script/script.h"
 #include "serialize.h"
 #include "uint256.h"
-
+#include "../version.h"
 static const int SERIALIZE_TRANSACTION_NO_WITNESS = 0x40000000;
 
 static const int WITNESS_SCALE_FACTOR = 4;
@@ -245,7 +245,11 @@ inline void UnserializeTransaction(TxType& tx, Stream& s) {
     const bool fAllowWitness = !(s.GetVersion() & SERIALIZE_TRANSACTION_NO_WITNESS);
 
     s >> tx.nVersion;
+#if TX_TIMESTAMP == 1
     s >> tx.nTime;//For PoS
+#else
+    
+#endif    
     unsigned char flags = 0;
     tx.vin.clear();
     tx.vout.clear();
@@ -281,7 +285,9 @@ inline void SerializeTransaction(const TxType& tx, Stream& s) {
     const bool fAllowWitness = !(s.GetVersion() & SERIALIZE_TRANSACTION_NO_WITNESS);
 
     s << tx.nVersion;
+#if TX_TIMESTAMP == 1  
     s << tx.nTime;
+#endif    
     unsigned char flags = 0;
     // Consistency check
     if (fAllowWitness) {
@@ -419,6 +425,7 @@ struct CMutableTransaction
 {
     int32_t nVersion;
     uint32_t nTime;//For
+
     std::vector<CTxIn> vin;
     std::vector<CTxOut> vout;
     uint32_t nLockTime;

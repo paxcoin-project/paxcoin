@@ -20,66 +20,6 @@
 
 bool fSearchGenesis = true;
 
-void searchGenesis(CBlock genesis){
-    printf("Start Search Genesis\n");
-    arith_uint256 hashTarget = arith_uint256().SetCompact(genesis.nBits);
-    unsigned int startTime =  genesis.nTime;
-    unsigned int startNonce =  genesis.nNonce;
-    
-    uint256 thash;
-    while(true){
-        thash = genesis.GetPoWHash();
-        
-        if(UintToArith256(thash)<hashTarget){
-            printf("found...\n");
-            break;
-        }
-        if(genesis.nNonce%5000==0){
-            printf("nonce %08X: hash = %s (target = %s)\n", genesis.nNonce, thash.ToString().c_str(), hashTarget.ToString().c_str());
-    
-        }
-        ++genesis.nNonce;
-        if (genesis.nNonce == 0)
-        {
-            printf("NONCE WRAPPED, incrementing time\n");
-            ++genesis.nTime;
-        }
-    }
-    
-    printf(" start block.nTime = %u \n",startTime );
-    printf(" start block.nNonce = %u \n", startNonce);
-    printf("block.nTime = %u \n", genesis.nTime);
-    printf("block.nNonce = %u \n", genesis.nNonce);
-    printf("block.GetHash = 0x%s\n", genesis.GetHash().ToString().c_str());
-    printf("block.PoWHash = 0x%s\n", genesis.GetPoWHash().ToString().c_str());
-    printf("block.hashMerkleRoot = 0x%s\n",   genesis.hashMerkleRoot.ToString().c_str());
-    exit(0);
-}
-static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesisOutputScript, uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
-{
-    CMutableTransaction txNew;
-    txNew.nTime = nTime;
-    txNew.nVersion = 1;
-    txNew.vin.resize(1);
-    txNew.vout.resize(1);
-    txNew.vin[0].scriptSig = CScript() << 0 << CScriptNum(42) 
-                                    << std::vector<unsigned char>((const unsigned char*)pszTimestamp, (const unsigned char*)pszTimestamp + strlen(pszTimestamp));
-    txNew.vout[0].SetEmpty();                                    
-    txNew.vout[0].nValue = genesisReward;
-    txNew.vout[0].scriptPubKey = genesisOutputScript;
-
-    CBlock genesis;
-    genesis.nTime    = nTime;
-    genesis.nBits    = nBits;
-    genesis.nNonce   = nNonce;
-    genesis.nVersion = nVersion;
-    genesis.vtx.push_back(MakeTransactionRef(std::move(txNew)));
-    genesis.hashPrevBlock.SetNull();
-    genesis.hashMerkleRoot = BlockMerkleRoot(genesis);
-    
-    return genesis;
-}
-
 /**
  * Build the genesis block. Note that the output of its generation
  * transaction cannot be spent since it did not originally exist in the
@@ -161,10 +101,7 @@ public:
         consensus.hashGenesisBlock = genesis.GetHash();
         uint256 hashGenesis = uint256S("0x7da4d09aa5b648d4ffa06c95460d3e31a742560ccf7fe36ec9109dee4c662e28");
         uint256 hashMerkelRoot = uint256S("0x1ad10cef0e592046c039d9eeb1d74ed6c4641fb7fad8ed76c0e7d3cfe0772410");
-        if(hashGenesis !=genesis.GetHash()){
-            genesis.nNonce = 0;
-            searchGenesis(genesis);
-        }
+       
         assert(consensus.hashGenesisBlock == hashGenesis);
         assert(genesis.hashMerkleRoot == hashMerkelRoot);
 
@@ -255,10 +192,7 @@ public:
         consensus.hashGenesisBlock = genesis.GetHash();
         uint256 hashGenesis = uint256S("0x1381055366fd77a7a55d1ee8f19b7e97f13fab67cd99ae921d07848eb64ed59e");
         uint256 hashMerkelRoot = uint256S("0x845a75eaaae2e16ab48dd213de480cc2fb3ebc83be937a3796b4a15e48aa04e8");
-        if(hashGenesis !=genesis.GetHash()){
-            genesis.nNonce = 0;
-            searchGenesis(genesis);
-        }
+        
         assert(consensus.hashGenesisBlock == hashGenesis);
         assert(genesis.hashMerkleRoot == hashMerkelRoot);
 
@@ -345,10 +279,7 @@ public:
         consensus.hashGenesisBlock = genesis.GetHash();
         uint256 hashGenesis = uint256S("0x86b2eda533411f046104f10f3dc940caa9e4c413684d69eff3fea615b4b3dcc1");
         uint256 hashMerkelRoot = uint256S("0xb273ce04ca4f3d5f1c9b17212fb995f836cdd838fac282b0bd73104e4ea5439c");
-        if(hashGenesis !=genesis.GetHash()){
-            genesis.nNonce = 0;
-            searchGenesis(genesis);
-        }
+       
         assert(consensus.hashGenesisBlock == hashGenesis);
         assert(genesis.hashMerkleRoot == hashMerkelRoot);
 

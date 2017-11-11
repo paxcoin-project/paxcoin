@@ -5,6 +5,10 @@
 #ifndef BITCOIN_VERSION_H
 #define BITCOIN_VERSION_H
 
+
+//for pos time stamp tx
+#define TX_TIMESTAMP 1
+
 /**
  * network protocol versioning
  */

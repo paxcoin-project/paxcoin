@@ -571,7 +571,6 @@ return a.second.time < b.second.time;
 
 UniValue getaddressmempool(const JSONRPCRequest& request)
 {
-    DbgMsg("g");
     if (request.fHelp || request.params.size() != 1)
         throw runtime_error(
             "getaddressmempool\n"
